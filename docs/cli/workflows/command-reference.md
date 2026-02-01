@@ -26,13 +26,35 @@ repr generate --template X # Use template (resume/changelog/narrative/interview)
 repr generate --dry-run    # Preview what would be sent
 ```
 
-## Quick Summaries
+## Git Workflow
 
 ```bash
-repr week                  # Last 7 days
-repr standup               # Last 3 days
-repr since "monday"        # Since specific date
-repr since "3 days ago" --save  # Save as story
+repr changes               # Show staged/unstaged/unpushed changes
+repr changes --explain     # Use LLM to explain changes
+repr changes --compact     # Compact output (no diffs)
+repr add .py               # Stage files matching pattern
+repr add .                 # Stage all files
+repr add cli -f            # Force add ignored files
+repr branch                # Create branch (AI-generated name)
+repr branch feat/my-feat   # Create branch with explicit name
+repr branch -r             # Regenerate branch name
+repr commit                # Generate message and commit
+repr commit -m "fix: typo" # Custom message
+repr commit -r             # Regenerate message
+repr push                  # Push commits to remote
+repr pr                    # Create PR (AI-generated title/body)
+repr pr -t "feat: add X"   # Custom PR title
+repr pr --draft            # Create draft PR
+```
+
+## Commits
+
+```bash
+repr commits               # Recent commits
+repr commits --days 7      # Last 7 days (week)
+repr commits --days 3      # Last 3 days (standup)
+repr commits --since "monday"  # Since specific date
+repr commits --repo myproject  # Filter by repo
 ```
 
 ## Story Management
@@ -138,7 +160,7 @@ repr config edit           # Open in $EDITOR
 | **Local LLM** | `repr generate --local` | Localhost only |
 | **BYOK** | `repr llm add <provider>` | Direct provider calls |
 | **Cloud** | `repr generate --cloud` | User-initiated network |
-| **Offline** | `repr week` / `repr stories` | Pure local ops |
+| **Offline** | `repr commits` / `repr stories` | Pure local ops |
 
 ## Getting Help
 
