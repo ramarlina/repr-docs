@@ -12,7 +12,7 @@ excerpt: Review your week's work and create a polished summary
 ### Step 1: See the Week's Overview
 
 ```bash
-repr week
+repr commits --days 7
 ```
 
 ### Step 2: Generate Stories

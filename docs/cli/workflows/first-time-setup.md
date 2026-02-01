@@ -43,10 +43,10 @@ Track these repositories? [Y/n]
 
 ### Step 2: Preview Your Work
 
-See what you've been working on (preview, no save):
+See what you've been working on this week:
 
 ```bash
-repr week
+repr commits --days 7
 ```
 
 ### Step 3: Generate Stories
@@ -85,7 +85,7 @@ repr login
 | Command | Purpose |
 |---------|---------|
 | `repr init [path]` | First-time setup, discover repos |
-| `repr week` | Preview recent work |
+| `repr commits --days 7` | Preview recent work |
 | `repr generate --local` | Create stories using local LLM |
 | `repr stories` | View generated stories |
 | `repr login` | Enable cloud sync (optional) |

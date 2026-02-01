@@ -265,8 +265,8 @@ repr profile export --format md > interview-prep.md
 **Why:** Stakeholders want to know what shipped. Changelog format is scannable and clear.
 
 ```bash
-repr since "2 weeks ago" --save
-repr generate --template changelog --local
+repr commits --days 14
+repr generate --template changelog --days 14 --local
 ```
 
 ### Writing a Blog Post?

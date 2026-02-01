@@ -32,7 +32,7 @@ icon: "rocket"
 
 ### "Our sprint demos went from chaos to polished in 5 minutes"
 
-> Every two weeks, our PM would ask 'what did the team ship?' and we'd scramble to remember. Now I just run `repr since "2 weeks ago"` on Friday afternoon and export it as our sprint summary.
+> Every two weeks, our PM would ask 'what did the team ship?' and we'd scramble to remember. Now I just run `repr commits --days 14` on Friday afternoon and export it as our sprint summary.
 >
 > Added/Changed/Fixed format. Real commit data. No one has to remember what they did. Our stakeholders love it.
 >
@@ -52,7 +52,7 @@ icon: "rocket"
 
 ### "My weekly 1-on-1s with my manager are 10x better"
 
-> I used to show up with vague 'I worked on some bug fixes.' Now I run `repr week` before every 1-on-1. I have specific examples of what I shipped, with context.
+> I used to show up with vague 'I worked on some bug fixes.' Now I run `repr commits --days 7` before every 1-on-1. I have specific examples of what I shipped, with context.
 >
 > My manager started using my exports for *her* updates to her boss. Got promoted 6 months later.
 >
@@ -149,26 +149,27 @@ Everything happens locally by default. You control what (if anything) gets share
 
 ## Quick Commands
 
-Once installed, these are the commands you'll use most:
+Once installed, these are the commands you'll use most. Use `rp` as shorthand for `repr`.
 
 ```bash
 # First-time setup
 repr init ~/code
 repr generate --local
+repr dashboard                    # Explore stories in web UI
 
-# Daily use
-repr standup                      # Last 3 days
-repr week                         # Last 7 days
-repr generate --local             # Turn commits into stories
+# Daily use (rp = repr)
+rp commits --days 3               # Last 3 days (standup)
+rp commits --days 7               # Last 7 days (week)
+rp generate --local               # Turn commits into stories
 
 # Interview prep
-repr generate --template interview
-repr story feature <id>           # Pin your best work
+rp generate --template interview
+rp story feature <id>             # Pin your best work
 
 # Publishing (optional)
-repr login
-repr push --all
-repr profile link                 # Get your public URL
+rp login
+rp push --all
+rp profile link                   # Get your public URL
 ```
 
 [See the full command reference →](/reference/cheatsheet)

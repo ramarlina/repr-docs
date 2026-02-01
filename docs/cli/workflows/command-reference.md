@@ -7,6 +7,15 @@ excerpt: Quick reference for all repr commands
 
 Quick reference for all repr commands.
 
+## Alias
+
+`rp` is a shorthand alias for `repr`. All commands work with either:
+
+```bash
+repr dashboard    # Full command
+rp dashboard      # Same thing, shorter
+```
+
 ## Setup & Status
 
 ```bash
@@ -15,6 +24,7 @@ repr status                # Overall health
 repr mode                  # Execution mode
 repr doctor                # Full diagnostics
 repr whoami                # Current user
+repr dashboard             # Web UI to explore stories
 ```
 
 ## Story Generation

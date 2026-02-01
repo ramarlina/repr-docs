@@ -24,10 +24,10 @@ repr repos add ~/code/team-api
 repr repos add ~/code/team-frontend  
 repr repos add ~/code/shared-lib
 
-# Generate stories for the last 2 weeks (one sprint)
-repr since "2 weeks ago" --save
+# View commits for the last 2 weeks (one sprint)
+repr commits --days 14
 
-# Or use the changelog template for sprint summaries
+# Generate stories with the changelog template for sprint summaries
 repr generate --template changelog --since "2 weeks ago"
 ```
 
@@ -193,7 +193,8 @@ You're a tech lead or architect. You want to stay aware of what your team is bui
 
 ```bash
 # Every Monday morning, review last week's work
-repr week --template changelog
+repr commits --days 7
+repr generate --template changelog --days 7
 ```
 
 Output shows:
@@ -227,8 +228,11 @@ You're a PM. Your stakeholders ask: "What's the engineering team working on?"
 ### Weekly Stakeholder Update
 
 ```bash
-# Generate user-facing changes only
-repr since "1 week ago" --save
+# View commits for the week
+repr commits --days 7
+
+# Generate stories from this week
+repr generate --days 7 --local
 
 # Export as markdown
 repr profile export --format md --since "1 week ago" > weekly-update.md
@@ -404,4 +408,23 @@ Once your team is using repr:
 - **Share workflows**: Document your team's repr workflows in your internal wiki
 
 Repr scales from individual developers to entire engineering organizations. Start small, expand as you find value.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

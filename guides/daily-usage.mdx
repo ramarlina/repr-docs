@@ -91,34 +91,32 @@ Install git hooks once. From then on, every commit you make gets silently queued
 Don't want hooks? No problem. Use repr as your standup prep tool.
 
 ```bash
-repr standup
+repr commits --days 3
 ```
 
 This gives you a quick summary of the last 3 days—perfect for answering "what did you work on yesterday?"
 
 ```text
-📊 Work since last 3 days (17 commits)
+Commits (last 3 days) — 17 total
 
-myproject (12 commits):
-  • Add user authentication flow
-  • Fix session timeout bug  
-  • Implement rate limiting middleware
-  • Update API documentation
+myproject:
+  abc1234  Add user authentication flow           • 2 days ago
+  def5678  Fix session timeout bug                • 2 days ago
+  ghi9012  Implement rate limiting middleware     • yesterday
+  jkl3456  Update API documentation               • today
   
-frontend-app (5 commits):
-  • Add loading states to forms
-  • Fix responsive layout on mobile
-
-Total: 17 commits across 2 repos
+frontend-app:
+  mno7890  Add loading states to forms            • yesterday
+  pqr1234  Fix responsive layout on mobile        • today
 ```
 
-**This is just a preview**—it doesn't save anything. But if you like what you see:
+Want to generate stories from these commits?
 
 ```bash
-repr standup --save
+repr generate --days 3 --local
 ```
 
-Now it's a permanent story in your `~/.repr/stories` folder.
+Now they're permanent stories in your `~/.repr/stories` folder.
 
 ## Option 3: End-of-Day Capture
 
@@ -126,40 +124,40 @@ Maybe you don't want automatic hooks, but you do want to capture your work at th
 
 ```bash
 # See what you did today
-repr since "this morning"
+repr commits --since "this morning"
 ```
 
 Output:
 ```text
-Today's work (8 commits):
+Commits (since this morning) — 8 total
 
 myproject:
-  • Implement password reset flow
-  • Add email verification
-  • Fix CORS headers for production
+  abc1234  Implement password reset flow    • 4 hours ago
+  def5678  Add email verification           • 3 hours ago
+  ghi9012  Fix CORS headers for production  • 1 hour ago
   
 frontend-app:
-  • Update user profile UI
-  • Add avatar upload
+  jkl3456  Update user profile UI           • 2 hours ago
+  mno7890  Add avatar upload                • 30 minutes ago
 ```
 
-Like what you see? Save it:
+Like what you see? Generate stories from them:
 
 ```bash
-repr since "this morning" --save
+repr generate --since "this morning" --local
 ```
 
 Or get even more specific:
 
 ```bash
 # Work since Monday
-repr since "monday" --save
+repr generate --since "monday" --local
 
 # Just this week
-repr since "1 week ago" --save
+repr generate --days 7 --local
 
 # Specific date range
-repr since "2026-01-01" --save
+repr generate --since "2026-01-01" --local
 ```
 
 ## Which Workflow Should You Use?
@@ -169,10 +167,10 @@ Here's how to think about it:
 | Workflow | Best For | Time Investment |
 |----------|----------|----------------|
 | **Hooks (automatic)** | People who want zero friction | 1 min setup, then nothing |
-| **Standup** | People who like morning rituals | 30 seconds daily |
+| **Morning review** | People who like morning rituals | 30 seconds daily |
 | **End-of-day** | People who batch work at day's end | 2 minutes daily |
 
-The honest truth? Most people start with standup, realize they want it automated, and switch to hooks. But all three work great—pick what fits your style.
+The honest truth? Most people start with `repr commits --days 3`, realize they want it automated, and switch to hooks. But all three work great—pick what fits your style.
 
 ## What Happens Next?
 

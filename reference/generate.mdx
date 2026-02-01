@@ -1,0 +1,275 @@
+---
+title: repr generate
+description: "Generate stories from commits"
+icon: "sparkles"
+---
+
+The `generate` command is the core of repr. It analyzes your git history and uses an LLM to write stories—turning raw commits into professional narratives.
+
+## Usage
+
+```bash
+repr generate [OPTIONS]
+```
+
+## Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `--local`, `-l` | Use local LLM (Ollama/LocalAI) | Auto (if not signed in) |
+| `--cloud` | Use cloud LLM (requires login) | Auto (if signed in) |
+| `--template <name>`, `-t` | Template: `resume`, `changelog`, `narrative`, `interview` | `resume` |
+| `--repo <path>` | Only generate for specific repository | All tracked repos |
+| `--commits <shas>` | Comma-separated commit SHAs to generate from | Recent commits |
+| `--since <date>` | Generate from commits since date (e.g., `2024-01-01`, `monday`, `2 weeks ago`) | - |
+| `--days <n>` | Generate from commits in the last N days | 90 |
+| `--batch-size <n>` | Number of commits to group into one story | 5 |
+| `--dry-run` | Preview what would be sent without saving | - |
+| `--prompt <text>`, `-p` | Append custom instructions to the LLM | - |
+
+## How It Works
+
+1. **Selects commits** - From specific SHAs (`--commits`), a timeframe (`--since`, `--days`), or defaults to last 90 days
+2. **Analyzes changes** - Reads diffs to understand what actually changed
+3. **Generates narrative** - LLM writes a story using your chosen template
+4. **Saves locally** - Story saved to `~/.repr/stories/<id>.md`
+
+All generation happens locally by default. Diffs never leave your machine unless you use `--cloud`.
+
+## Examples
+
+### Basic Generation
+
+Generate using local LLM:
+```bash
+repr generate --local
+```
+
+Output:
+```text
+Generating stories (local LLM)...
+
+myproject
+  • Built OAuth2 integration with Google and GitHub providers
+  • Implemented Redis caching layer for session management
+  • Fixed race condition in authentication flow
+
+Generated 3 stories
+Stories saved to: ~/.repr/stories
+```
+
+### Use a Specific Template
+
+Generate interview-ready stories with STAR format:
+```bash
+repr generate --template interview --local
+```
+
+This creates stories structured as:
+- **Situation:** Context and problem
+- **Task:** What needed to be done
+- **Action:** How you solved it
+- **Result:** Measurable impact
+
+Perfect for behavioral interviews.
+
+### Generate from a Specific Timeframe
+
+Control the time range for commit selection:
+
+```bash
+# Last 30 days
+repr generate --days 30 --local
+
+# Since a specific date
+repr generate --since 2024-01-01 --local
+
+# Natural language dates
+repr generate --since "2 weeks ago" --local
+repr generate --since monday --local
+repr generate --since "last month" --local
+```
+
+Supported date formats:
+- **ISO dates**: `2024-01-01`, `2024-06-15`
+- **Day names**: `monday`, `tuesday`, etc. (previous occurrence)
+- **Relative**: `3 days ago`, `2 weeks ago`, `1 month ago`
+- **Keywords**: `yesterday`, `today`, `last week`, `last month`
+
+### Generate from Specific Commits
+
+Target exact commits instead of using recent history:
+```bash
+# List commits to find SHAs
+repr commits --limit 20
+
+# Generate from selected commits
+repr generate --commits abc1234,def5678,ghi9012 --local
+```
+
+### Generate for One Project
+
+Focus on a single repository:
+```bash
+repr generate --repo ~/code/important-project --template resume
+```
+
+### Add Custom Context
+
+Guide the LLM with additional instructions:
+```bash
+repr generate --local --prompt "Focus on performance optimizations and scalability improvements"
+```
+
+This appends your instructions to the system prompt, influencing how the LLM writes your stories.
+
+### Preview Before Generating
+
+See what would be sent to the LLM without actually generating:
+```bash
+repr generate --dry-run
+```
+
+Output:
+```text
+Dry Run Preview
+Commits to analyze: 23
+Template: resume
+
+Estimated tokens: ~45,000
+
+Sample commits:
+  • abc1234 Implement user authentication
+  • def5678 Add Redis caching
+  • ghi9012 Fix session timeout bug
+  ... and 20 more
+```
+
+Useful for checking token limits before expensive cloud generation.
+
+## Templates Comparison
+
+| Template | Best For | Style | Example |
+|----------|----------|-------|---------|
+| `resume` | Portfolios, performance reviews | Action verbs, impact-focused | "Optimized database queries by 40%..." |
+| `changelog` | Release notes, sprint summaries | Categorized bullets (Added/Fixed/Changed) | "Fixed: Race condition in auth flow" |
+| `narrative` | Blog posts, case studies | Storytelling, problem-solving journey | "We started by identifying a bottleneck..." |
+| `interview` | Job interviews, promotions | STAR format (Situation/Task/Action/Result) | "**Result:** Reduced failures by 60%" |
+
+## Batch Sizes
+
+The `--batch-size` option controls how many commits are grouped into one story:
+
+- **Small (3-5)**: More stories, focused scope. Good for daily/weekly reviews.
+- **Medium (5-10)**: Balanced. Good for feature work.
+- **Large (10-20)**: Comprehensive stories. Good for project summaries.
+
+```bash
+# Daily micro-stories
+repr generate --batch-size 3 --local
+
+# Big-picture project narrative
+repr generate --batch-size 15 --template narrative --local
+```
+
+## Privacy Modes
+
+### Local-Only (Maximum Privacy)
+
+```bash
+repr generate --local
+```
+
+- ✅ Diffs processed by local LLM (Ollama/LocalAI)
+- ✅ Zero data leaves your machine
+- ✅ Works in air-gapped environments
+- ✅ Free, no API costs
+
+### Cloud (Managed)
+
+```bash
+repr generate --cloud
+```
+
+- ⚠️ Requires `repr login`
+- ⚠️ Diffs sent to repr.dev for processing
+- ✅ No local LLM needed
+- ✅ Fast, optimized models
+
+### BYOK (Bring Your Own Key)
+
+```bash
+repr llm add openai
+repr generate
+```
+
+- ✅ Diffs sent directly to your API provider (OpenAI, Anthropic, etc.)
+- ✅ repr.dev never sees your data
+- ✅ Your API key, your costs
+- ✅ Keys stored in OS keychain
+
+## Token Limits
+
+For cloud generation, repr enforces limits to control costs:
+
+- **Max commits per batch:** 50 (configurable)
+- **Token limit:** ~100k tokens per batch
+
+If you exceed limits, repr will:
+1. Show you the split plan
+2. Ask for confirmation
+3. Process in multiple batches
+
+```bash
+repr generate --cloud
+```
+
+Output:
+```text
+⚠ 87 commits exceeds 50-commit limit
+
+Will split into 2 batches:
+  Batch 1: commits 1-50 (est. 45k tokens)
+  Batch 2: commits 51-87 (est. 32k tokens)
+
+Continue with generation? [Y/n]
+```
+
+## Troubleshooting
+
+### "Local LLM not found"
+
+Install Ollama and pull a model:
+```bash
+brew install ollama
+ollama pull llama3.2
+repr llm test
+```
+
+### "No repositories tracked"
+
+Initialize repr first:
+```bash
+repr init ~/code
+```
+
+### Generation is slow
+
+- Use `--batch-size 3` for smaller stories
+- Try a lighter model: `ollama pull phi3`
+- Use cloud generation instead
+
+### Stories are too technical/brief
+
+Add a custom prompt:
+```bash
+repr generate --local --prompt "Write in accessible language for non-technical stakeholders. Focus on business impact."
+```
+
+## Related Commands
+
+- `repr stories` - View generated stories
+- `repr story view <id>` - Read a specific story
+- `repr review` - Interactive review workflow
+- `repr push` - Publish stories to repr.dev
+

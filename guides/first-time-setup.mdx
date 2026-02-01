@@ -44,24 +44,22 @@ Let's go.
     Before generating anything, let's see what you've been up to this week.
 
     ```bash
-    repr week
+    repr commits --days 7
     ```
 
     You'll get a quick summary like:
 
     ```text
-    📊 Last 7 days across 4 repositories
+    Commits (last 7 days) — 20 total
 
-    myproject (12 commits):
-      • Add OAuth2 integration
-      • Implement Redis caching
-      • Fix race condition in auth flow
+    myproject:
+      abc1234  Add OAuth2 integration        • 3 days ago
+      def5678  Implement Redis caching       • 2 days ago
+      ghi9012  Fix race condition in auth    • yesterday
     
-    frontend-app (8 commits):
-      • Redesign settings page
-      • Add dark mode toggle
-    
-    Total: 20 commits, 8 files changed
+    frontend-app:
+      jkl3456  Redesign settings page        • 4 days ago
+      mno7890  Add dark mode toggle          • today
     ```
 
     This is just a preview—nothing saved yet. But it gives you a sense of what repr will work with.

@@ -47,24 +47,22 @@ repr review
 - `[s]` Skip
 - `[q]` Quit
 
-## Approach B: Manual Daily Standup
+## Approach B: Manual Morning Review
 
-Quick standup summary (last 3 days):
+Quick summary of last 3 days (for standups):
 
 ```bash
-repr standup
+repr commits --days 3
 ```
 
 **Output:**
 ```
-📊 Work since last 3 days
-myproject (8 commits):
-  • Add user authentication flow
-  • Fix session timeout bug
-  • Implement rate limiting
-Total: 8 commits
+Commits (last 3 days) — 8 total
 
-This summary wasn't saved. Run with --save to create a story.
+myproject:
+  abc1234  Add user authentication flow    • 2 days ago
+  def5678  Fix session timeout bug         • yesterday
+  ghi9012  Implement rate limiting         • today
 ```
 
 ## Approach C: End-of-Day Capture
@@ -72,13 +70,13 @@ This summary wasn't saved. Run with --save to create a story.
 Check what you did today:
 
 ```bash
-repr since "this morning"
+repr commits --since "this morning"
 ```
 
-Save it as a story:
+Generate stories from today's work:
 
 ```bash
-repr since "this morning" --save
+repr generate --since "this morning" --local
 ```
 
 Or generate from specific commits:
@@ -96,8 +94,8 @@ repr generate --commits abc1234,def5678,ghi9012
 |---------|---------|
 | `repr hooks install --all` | Set up auto-capture |
 | `repr generate` | Create stories from queued commits |
-| `repr standup` | Quick 3-day summary |
-| `repr since <date>` | Work since specific time |
+| `repr commits --days 3` | Quick 3-day summary |
+| `repr commits --since <date>` | Commits since specific time |
 | `repr review` | Interactive story review |
 
 ## Next Steps

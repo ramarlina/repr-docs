@@ -23,14 +23,17 @@ icon: "terminal"
 | `repr generate --template <name>` | Use a specific template (resume, changelog, narrative, interview). |
 | `repr generate --dry-run` | Preview what would be sent/generated. |
 
-## Quick Summaries
+## Commits
 
 | Command | Description |
 |---------|-------------|
-| `repr week` | Show work from the last 7 days. |
-| `repr standup` | Show work from the last 3 days. |
-| `repr since <date>` | Show work since a specific date or time. |
-| `repr since <date> --save` | Save the summary as a permanent story. |
+| `repr commits` | List recent commits across tracked repos. |
+| `repr commits --days 7` | Show commits from last 7 days (week). |
+| `repr commits --days 3` | Show commits from last 3 days (standup). |
+| `repr commits --since monday` | Show commits since a specific day. |
+| `repr commits --since "2 weeks ago"` | Natural language date filtering. |
+| `repr commits --repo <name>` | Filter by repository name. |
+| `repr commits --json` | Output as JSON. |
 
 ## Story Management
 
@@ -96,4 +99,23 @@ icon: "terminal"
 | `repr profile` | View current profile settings. |
 | `repr profile export` | Export profile to Markdown or JSON. |
 | `repr profile link` | Get public profile URL. |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

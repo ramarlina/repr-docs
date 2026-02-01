@@ -25,7 +25,7 @@ repr generate --repo ~/code/team-project-1 --template changelog
 ### Step 3: Filter by Date Range
 
 ```bash
-repr since "2025-10-01"
+repr commits --since "2025-10-01"
 ```
 
 ### Step 4: Export Project Summaries

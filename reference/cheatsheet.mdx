@@ -1,0 +1,466 @@
+---
+title: Command Cheatsheet
+description: "Quick reference for all repr commands"
+icon: "list-check"
+---
+
+Quick reference for every repr command. Bookmark this page.
+
+## Setup & Status
+
+| Command | What It Does |
+|---------|-------------|
+| `repr init [path]` | First-time setup - scan for repositories |
+| `repr status` | Show overall health and sync status |
+| `repr mode` | Show current execution mode (local/cloud/locked) |
+| `repr doctor` | Run full diagnostics |
+| `repr whoami` | Show current authenticated user |
+| `repr --version` | Show repr version |
+
+**Examples:**
+```bash
+repr init ~/code              # Scan ~/code for git repos
+repr status                   # Quick health check
+repr doctor                   # Detailed diagnostics
+```
+
+---
+
+## Story Generation
+
+| Command | What It Does |
+|---------|-------------|
+| `repr generate` | Generate stories (uses default LLM) |
+| `repr generate --local` | Generate using local LLM only |
+| `repr generate --cloud` | Generate using repr cloud LLM |
+| `repr generate --template NAME` | Use specific template (resume/changelog/narrative/interview) |
+| `repr generate --dry-run` | Preview what would be generated |
+| `repr generate --batch-size N` | Process commits in batches of N |
+| `repr generate --since DATE` | Generate from specific date forward |
+| `repr generate --repo PATH` | Generate from specific repository only |
+
+**Examples:**
+```bash
+repr generate --local                              # Local generation
+repr generate --template interview                 # STAR-format stories
+repr generate --since "2 weeks ago"                # Last 2 weeks only
+repr generate --repo ~/code/my-project --local     # Specific repo
+```
+
+---
+
+## Commits
+
+| Command | What It Does |
+|---------|-------------|
+| `repr commits` | Show recent commits |
+| `repr commits --days 7` | Show commits from last 7 days (week) |
+| `repr commits --days 3` | Show commits from last 3 days (standup) |
+| `repr commits --since DATE` | Show commits since specific date |
+| `repr commits --repo NAME` | Filter by repository |
+| `repr commits --limit N` | Limit number of commits |
+| `repr commits --json` | Output as JSON |
+
+**Examples:**
+```bash
+repr commits --days 7            # Last week
+repr commits --days 3            # Quick standup view
+repr commits --since "monday"    # Since Monday
+repr commits --since "this morning"  # Today's work
+repr commits --limit 10          # Last 10 commits
+repr commits --repo myproject    # Specific repo
+```
+
+---
+
+## Story Management
+
+| Command | What It Does |
+|---------|-------------|
+| `repr stories` | List all stories |
+| `repr stories --needs-review` | Show stories needing review |
+| `repr story view ID` | View specific story |
+| `repr story edit ID` | Edit story in `$EDITOR` |
+| `repr story delete ID` | Delete story permanently |
+| `repr story hide ID` | Hide from public profile |
+| `repr story feature ID` | Pin to top of profile |
+| `repr story unhide ID` | Make visible again |
+| `repr review` | Interactive review mode |
+
+**Examples:**
+```bash
+repr stories                     # List all
+repr stories --needs-review      # Need attention
+repr story view 01ABC...         # View one story
+repr story edit 01ABC...         # Edit in vim/nano/vscode
+repr story feature 01ABC...      # Pin to profile top
+repr review                      # Interactive mode
+```
+
+---
+
+## Repository Management
+
+| Command | What It Does |
+|---------|-------------|
+| `repr repos` | List tracked repositories |
+| `repr repos add PATH` | Add repository to tracking |
+| `repr repos remove PATH` | Stop tracking repository |
+| `repr repos pause PATH` | Temporarily pause tracking |
+| `repr repos resume PATH` | Resume tracking |
+
+**Examples:**
+```bash
+repr repos                        # Show what's tracked
+repr repos add ~/code/my-project  # Add one
+repr repos add ~/code/proj-*      # Add multiple (glob)
+repr repos remove ~/code/old      # Stop tracking
+```
+
+---
+
+## Git Hooks
+
+| Command | What It Does |
+|---------|-------------|
+| `repr hooks install --all` | Install hooks in all tracked repos |
+| `repr hooks install --repo PATH` | Install in specific repo |
+| `repr hooks remove --all` | Remove from all repos |
+| `repr hooks remove --repo PATH` | Remove from specific repo |
+| `repr hooks status` | Check hook status and queue |
+
+**Examples:**
+```bash
+repr hooks install --all          # Set up everywhere
+repr hooks status                 # Check what's queued
+repr hooks remove --repo ~/code/old-project
+```
+
+---
+
+## Cloud Operations
+
+| Command | What It Does |
+|---------|-------------|
+| `repr login` | Authenticate with repr.dev |
+| `repr logout` | Sign out |
+| `repr push` | Upload new stories to cloud |
+| `repr push --all` | Upload all stories |
+| `repr push --dry-run` | Preview what would be uploaded |
+| `repr push --story ID` | Push specific story |
+| `repr pull` | Download stories from cloud |
+| `repr sync` | Bidirectional sync (pull + push) |
+| `repr sync --force` | Force sync, overwrite conflicts |
+
+**Examples:**
+```bash
+repr login                        # Sign in
+repr push --dry-run               # Preview
+repr push --all                   # Publish everything
+repr sync                         # Two-way sync
+```
+
+---
+
+## LLM Configuration
+
+| Command | What It Does |
+|---------|-------------|
+| `repr llm configure` | Interactive LLM setup |
+| `repr llm test` | Test connection to LLM |
+| `repr llm add PROVIDER` | Add BYOK API key (openai/anthropic/groq/together) |
+| `repr llm remove PROVIDER` | Remove BYOK provider |
+| `repr llm use MODE` | Set default (local/cloud/byok:PROVIDER) |
+| `repr llm list` | Show available providers |
+
+**Examples:**
+```bash
+repr llm configure                # Interactive setup
+repr llm test                     # Verify connection
+repr llm add openai               # Add your OpenAI key
+repr llm use byok:openai          # Use as default
+repr llm use local                # Switch to local
+```
+
+---
+
+## Privacy & Security
+
+| Command | What It Does |
+|---------|-------------|
+| `repr privacy explain` | Show privacy model summary |
+| `repr privacy audit` | Show log of network activity |
+| `repr privacy audit --days N` | Audit last N days |
+| `repr privacy lock-local` | Disable all cloud features |
+| `repr privacy lock-local --permanent` | Permanently disable cloud |
+| `repr privacy unlock-local` | Re-enable cloud features |
+
+**Examples:**
+```bash
+repr privacy explain              # What data goes where?
+repr privacy audit --days 30      # Last month's activity
+repr privacy lock-local           # Go full offline
+```
+
+---
+
+## Profile & Export
+
+| Command | What It Does |
+|---------|-------------|
+| `repr profile` | View profile settings |
+| `repr profile set-bio TEXT` | Set profile bio |
+| `repr profile set-location TEXT` | Set location |
+| `repr profile set-available BOOL` | Set availability (true/false) |
+| `repr profile export` | Export profile/stories |
+| `repr profile export --format md` | Export as Markdown |
+| `repr profile export --format json` | Export as JSON |
+| `repr profile export --since DATE` | Export from specific date |
+| `repr profile link` | Get public profile URL |
+
+**Examples:**
+```bash
+repr profile set-bio "Full-stack engineer"
+repr profile set-available true
+repr profile export --format md > profile.md
+repr profile export --format json --since "3 months ago"
+repr profile link                 # Get public URL
+```
+
+---
+
+## Data Management
+
+| Command | What It Does |
+|---------|-------------|
+| `repr data` | Show storage stats |
+| `repr data backup -o FILE` | Create backup |
+| `repr data restore FILE` | Restore from backup |
+| `repr data restore FILE --merge` | Merge with existing data |
+| `repr data restore FILE --replace` | Replace all data |
+| `repr data clear-cache` | Clear cache (keeps stories) |
+
+**Examples:**
+```bash
+repr data                         # How much space used?
+repr data backup -o ~/backup.json # Create backup
+repr data restore ~/backup.json --merge
+repr data clear-cache             # Free up space
+```
+
+---
+
+## Configuration
+
+| Command | What It Does |
+|---------|-------------|
+| `repr config show` | Show all configuration |
+| `repr config show KEY` | Show specific config value |
+| `repr config set KEY VALUE` | Set config value |
+| `repr config edit` | Open config in `$EDITOR` |
+| `repr config reset` | Reset to defaults |
+
+**Examples:**
+```bash
+repr config show                  # Show everything
+repr config show llm.default      # One value
+repr config set llm.local_model llama3.2
+repr config edit                  # Manual editing
+```
+
+---
+
+## Common Workflows
+
+### First-Time Setup
+```bash
+pipx install repr-cli
+repr init ~/code
+repr generate --local
+repr stories
+```
+
+### Daily Workflow (Automatic)
+```bash
+repr hooks install --all  # One-time setup
+# ... work normally, hooks capture commits ...
+repr generate --local     # End of day
+repr review               # Quick review
+```
+
+### Daily Workflow (Manual)
+```bash
+repr commits --days 3     # Morning check
+# ... do work ...
+repr generate --since "this morning" --local  # End of day
+```
+
+### Weekly Reflection
+```bash
+repr commits --days 7
+repr generate --local --batch-size 10
+repr story edit <id>      # Polish
+repr story feature <id>   # Mark best work
+repr profile export --format md > weekly.md
+```
+
+### Interview Prep
+```bash
+repr generate --template interview --local
+repr stories
+repr story view <id>
+repr story feature <id>   # Mark top stories
+repr profile export --format md > interview-prep.md
+```
+
+### Publishing Profile
+```bash
+repr login
+repr profile set-bio "Your bio here"
+repr push --dry-run       # Preview
+repr push --all           # Publish
+repr profile link         # Get URL
+```
+
+### Multi-Device Sync
+```bash
+repr pull                 # Start of session
+# ... work ...
+repr push                 # End of session
+# Or: repr sync            # Both at once
+```
+
+### Backup & Restore
+```bash
+repr data backup -o ~/backup-$(date +%Y-%m-%d).json
+repr data restore ~/backup-2026-01-05.json --merge
+```
+
+### Troubleshooting
+```bash
+repr doctor               # Diagnose issues
+repr llm test             # Test LLM connection
+repr privacy audit        # Check network activity
+repr config show          # Verify settings
+```
+
+---
+
+## Flags & Options
+
+### Common Flags (Work on Most Commands)
+
+| Flag | What It Does |
+|------|-------------|
+| `--help` | Show help for command |
+| `--json` | Output as JSON |
+| `--quiet` | Suppress output |
+| `--verbose` | More detailed output |
+| `--dry-run` | Preview without executing |
+
+**Examples:**
+```bash
+repr generate --help
+repr stories --json
+repr sync --quiet
+repr doctor --verbose
+repr push --dry-run
+```
+
+---
+
+## Environment Variables
+
+| Variable | What It Does |
+|----------|-------------|
+| `REPR_CONFIG_DIR` | Override config directory (default: `~/.repr`) |
+| `REPR_API_URL` | Override API endpoint |
+| `REPR_LLM_API_URL` | Override local LLM endpoint |
+| `EDITOR` | Editor for `repr story edit` |
+
+**Examples:**
+```bash
+export REPR_CONFIG_DIR=~/custom-repr-dir
+export EDITOR=code  # Use VS Code for editing
+export REPR_LLM_API_URL=http://localhost:8080/v1
+```
+
+---
+
+## Tips & Tricks
+
+### Aliases to Add to Your Shell
+
+```bash
+# Add to ~/.zshrc or ~/.bashrc
+
+alias rg="repr generate --local"
+alias rs="repr stories"
+alias rc="repr commits"
+alias rv="repr story view"
+alias rr="repr review"
+alias rsync="repr sync"
+```
+
+### Combine with jq for Filtering
+
+```bash
+# Python stories only
+repr stories --json | jq '.[] | select(.technologies | contains(["Python"]))'
+
+# Featured stories only
+repr stories --json | jq '[.[] | select(.is_featured == true)]'
+
+# Stories from last month
+repr stories --json | jq '[.[] | select(.created_at >= "2025-12-01")]'
+```
+
+### Git Aliases for Sync
+
+```bash
+# Add to ~/.gitconfig
+[alias]
+    pp = !git pull && repr pull
+    ps = !git push && repr push
+```
+
+Now `git pp` pulls both code and stories.
+
+---
+
+## Getting Help
+
+| Command | What It Does |
+|---------|-------------|
+| `repr --help` | General help |
+| `repr COMMAND --help` | Help for specific command |
+| `repr doctor` | Diagnose issues |
+
+**Or visit:**
+- Docs: https://repr.dev/docs
+- GitHub: https://github.com/repr-app/cli
+- Issues: https://github.com/repr-app/cli/issues
+
+---
+
+*Last updated: January 5, 2026 — For repr CLI v0.2.0*
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
